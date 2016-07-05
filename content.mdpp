@@ -2,8 +2,12 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-#Life of an instruction in Clang / LLVM
-Francis Visoiu Mistrih
+# Life of an instruction in
+# Clang / LLVM
+
+#### Francis Visoiu Mistrih
+###### <francis@lse.epita.fr>
+
 .footnote[[sources](https://github.com/thegameg/llvm-life)]
 ---
 
