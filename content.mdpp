@@ -1,0 +1,32 @@
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+#Life of an instruction in LLVM
+Francis Visoiu Mistrih
+.footnote[[sources](https://github.com/thegameg/llvm-life)]
+---
+
+## Clang
+
+##### foo.c - C
+
+```c++
+!INCLUDE "sources/foo.c"
+```
+
+---
+
+## Clang AST
+
+##### clang-check -ast-dump foo.c
+
+```clangast
+!INCLUDE "sources/foo.clang-check.modified"
+```
+
+---
+
+## Any questions?
+
+.footnote[Slideshow created using [remark](http://github.com/gnab/remark).]
