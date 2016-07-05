@@ -15,3 +15,76 @@
 !INCLUDE "sources/foo.opt.ll.modified"
 ```
 ---
+
+## TargetLowering
+## SelectionDAG
+
+#### SDNode
+
+##### llc -view-dag-combine1-dags foo.ll
+
+---
+
+## DAGCombiner
+
+#### SDNode
+
+##### llc -view-legalize-dags foo.ll
+
+---
+
+## SelectionDAG legalization
+
+#### SDNode
+
+##### llc -view-isel-dags foo.ll
+
+---
+
+## SelectionDAGISel
+
+#### MachineSDNode
+
+##### llc -view-sched-dags foo.ll
+
+---
+
+## ScheduleDAG
+
+#### MachineInstr
+
+##### llc -print-machineinstr foo.ll
+
+---
+
+## Register allocation
+
+#### Non-SSA MachineInstr
+
+##### llc -print-machineinstrs=virtregrewriter foo.ll
+
+---
+
+## MCInstLower
+
+#### MCInst
+
+##### llc -asm-show-inst foo.ll -o foo.s
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### llc foo.ll -o foo.s
+
+---
+
+## MCCodeEmitter
+
+#### ELF
+
+#####
+
+---
