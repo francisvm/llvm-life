@@ -85,6 +85,12 @@
         background: #fff;
         z-index: 0;
       }
+      li {
+        text-align: left;
+      }
+      .selectiondag img {
+        max-width: 63%;
+      }
     </style>
   </head>
   <body>

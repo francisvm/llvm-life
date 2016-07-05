@@ -16,6 +16,10 @@
 ```
 ---
 
+.selectiondag[![SelectionDAG](sources/selection-dag.jpg)]
+
+---
+
 ## TargetLowering
 ## SelectionDAG
 
@@ -23,13 +27,7 @@
 
 ##### llc -view-dag-combine1-dags foo.ll
 
----
-
-## DAGCombiner
-
-#### SDNode
-
-##### llc -view-legalize-dags foo.ll
+// FIXME: Show the add node.
 
 ---
 
@@ -38,6 +36,16 @@
 #### SDNode
 
 ##### llc -view-isel-dags foo.ll
+
+* Remove illegal types
+```llvm
+i1 -> i32
+```
+
+* Remove target-illegal instructions
+```llvm
+load i32, i32* %1 -> add nsw i32 %1, 0
+```
 
 ---
 
