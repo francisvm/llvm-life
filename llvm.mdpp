@@ -1,6 +1,6 @@
 ## LLVM IR
 
-##### clang -S -emit-llvm
+##### clang -S -emit-llvm foo.c -o foo.ll
 
 ```llvm
 !INCLUDE "sources/foo.ll.modified"
@@ -9,9 +9,9 @@
 
 ## LLVM IR
 
-##### clang -S -emit-llvm -O1
+##### opt -mem2reg -S foo.ll -o foo.ll
 
 ```llvm
-!INCLUDE "sources/foo.O1.ll.modified"
+!INCLUDE "sources/foo.opt.ll.modified"
 ```
 ---
