@@ -10858,6 +10858,50 @@ function(hljs) {
     ])
   };
 }
+},{name:"llvm",create:/*
+Language: LLVM IR
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var LLVM_GLOBAL = {
+    className: 'symbol',
+    begin: '@[a-zA-Z0-9_]+'
+  };
+
+  var LLVM_VARIABLES = {
+    className: 'variable',
+    begin: '%[a-zA-Z0-9_]+'
+  };
+
+  var NUMBERS = {
+    className: 'title',
+    variants: [
+      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+      { begin: '(-?)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+    ],
+    relevance: 0
+  };
+
+  var LLVM_KEYWORDS = {
+    keyword: 'i1 i8 i16 i32 i64 u1 u8 u32 u64',
+    built_in: 'alloca align add store load nsw ret define',
+    literal: 'null'
+  };
+
+  var EXPRESSION_CONTAINS = [
+    LLVM_VARIABLES,
+    LLVM_GLOBAL,
+    NUMBERS
+  ];
+
+  return {
+    keywords: LLVM_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
+  };
+}
 },{name:"lua",create:/*
 Language: Lua
 Author: Andrew Fedorov <dmmdrs@mail.ru>
