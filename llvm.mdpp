@@ -1,0 +1,17 @@
+## LLVM IR
+
+##### clang -S -emit-llvm
+
+```llvm
+!INCLUDE "sources/foo.ll.modified"
+```
+---
+
+## LLVM IR
+
+##### clang -S -emit-llvm -O1
+
+```llvm
+!INCLUDE "sources/foo.O1.ll.modified"
+```
+---
