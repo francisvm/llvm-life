@@ -27,6 +27,14 @@ Francis Visoiu Mistrih
 
 ---
 
+## Clang CFG
+
+##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
+
+![cfg](sources/clang-cfg.jpg)
+
+---
+
 ## Any questions?
 
 .footnote[Slideshow created using [remark](http://github.com/gnab/remark).]
