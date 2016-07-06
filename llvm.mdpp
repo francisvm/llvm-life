@@ -68,7 +68,7 @@ add nsw i32 %1, 0
 
 #### MachineInstr
 
-##### llc -print-before=expand-isel-pseudo foo.ll
+##### llc -print-before=expand-isel-pseudos foo.ll
 
 ```llvm
 !INCLUDE "sources/schedule-dag.sd"
@@ -83,7 +83,7 @@ add nsw i32 %1, 0
 ##### llc -print-machineinstrs=virtregrewriter foo.ll
 
 ```llvm
-!INCLUDE "sources/regalloc.sd"
+!INCLUDE "sources/regalloc.modified.sd"
 ```
 
 ---
@@ -93,6 +93,10 @@ add nsw i32 %1, 0
 #### MCInst
 
 ##### llc -asm-show-inst foo.ll -o foo.s
+
+```x86
+!INCLUDE "sources/mcinst.s"
+```
 
 ---
 
