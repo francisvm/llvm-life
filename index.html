@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>LLVM / Clang</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono);
+      @import url(https://fonts.googleapis.com/css?family=Inconsolata);
+
+      body {
+        font-family: 'Source Code Pro';
+      }
+      h1, h2, h3 {
+        font-family: 'Inconsolata';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 2.8em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .remark-code { text-align: left; }
+      .remark-code-line-highlighted {
+        background: rgba(168, 0, 0, 0.1);
+        -moz-box-shadow: 0 0 8px #111;
+        -webkit-box-shadow: 0 0 8px #111;
+        box-shadow: 0 0 8px #111;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+        font-size: 9pt;
+      }
+      a, a > code {
+        color: #cc6666;
+        text-decoration: none;
+      }
+      code {
+        border-radius: 8px;
+        font-family: 'Ubuntu Mono';
+      }
+      .inverse {
+        background: #111111;
+        color: #cfcfcf;
+        text-shadow: 0 0 5px #000;
+        position: left;
+      }
+      .inverse h1, .inverse h2 {
+        color: #c5c8c6;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+      li {
+        text-align: left;
+      }
+      .selectiondag img {
+        max-width: 63%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+# Life of an instruction in
+# Clang / LLVM
+
+#### Francis Visoiu Mistrih
+###### <francis@lse.epita.fr>
+
+.footnote[[sources](https://github.com/thegameg/llvm-life)]
+---
+
+## Clang
+
+##### foo.c - C
+
+```c++
+int foo(int a, int b)
+{
+*  return a + b;
+}
+```
+
+---
+
+## Clang AST
+
+##### clang-check -ast-dump foo.c
+
+```clangast
+TranslationUnitDecl 0x29eaa20
+`-FunctionDecl 0x29eb460 <foo.c:1:1, line:4:1> line:1:5 foo 'int (int, int)'
+  |-ParmVarDecl 0x29eb318 <col:9, col:13> col:13 used a 'int'
+  |-ParmVarDecl 0x29eb388 <col:16, col:20> col:20 used b 'int'
+  `-CompoundStmt 0x29eb618 <line:2:1, line:4:1>
+    `-ReturnStmt 0x29eb600 <line:3:3, col:14>
+*      `-BinaryOperator 0x29eb5d8 <col:10, col:14> 'int' '+'
+        |-ImplicitCastExpr 0x29eb5a8 <col:10> 'int' <LValueToRValue>
+        | `-DeclRefExpr 0x.. <col:10> 'int' lvalue ParmVar 0x29eb318 'a' 'int'
+        `-ImplicitCastExpr 0x29eb5c0 <col:14> 'int' <LValueToRValue>
+          `-DeclRefExpr 0x.. <col:14> 'int' lvalue ParmVar 0x29eb388 'b' 'int'
+```
+
+---
+
+## Clang CFG
+
+##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
+
+![CFG](sources/clang-cfg.modified.jpg)
+
+---
+
+## LLVM IR
+
+##### clang -S -emit-llvm foo.c -o foo.ll
+
+```llvm
+; Function Attrs: nounwind uwtable
+define i32 @foo(i32 %a, i32 %b) {
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  store i32 %a, i32* %1, align 4
+  store i32 %b, i32* %2, align 4
+  %3 = load i32, i32* %1, align 4
+  %4 = load i32, i32* %2, align 4
+* %5 = add nsw i32 %3, %4
+  ret i32 %5
+}
+```
+---
+
+## LLVM IR
+
+##### opt -mem2reg -S foo.ll -o foo.ll
+
+```llvm
+; Function Attrs: nounwind uwtable
+define i32 @foo(i32 %a, i32 %b) {
+* %1 = add nsw i32 %a, %b
+  ret i32 %1
+}
+```
+---
+
+.selectiondag[![SelectionDAG](sources/selection-dag.jpg)]
+
+---
+
+## TargetLowering - SelectionDAG
+
+#### SDNode
+
+##### llc -view-dag-combine1-dags foo.ll
+
+![SelectionDAG](sources/selection-dag.modified.jpg)
+
+---
+
+## SelectionDAG legalization
+
+#### SDNode
+
+##### llc -view-isel-dags foo.ll
+
+* Remove illegal types
+```llvm
+i1 -> i32
+```
+
+* Remove target-illegal instructions
+```llvm
+load i32, i32* %1
+```
+to
+```llvm
+add nsw i32 %1, 0
+```
+
+---
+
+## SelectionDAGISel
+
+#### MachineSDNode
+
+##### llc -view-sched-dags foo.ll
+
+---
+
+## ScheduleDAG
+
+#### MachineInstr
+
+##### llc -print-machineinstr foo.ll
+
+---
+
+## Register allocation
+
+#### Non-SSA MachineInstr
+
+##### llc -print-machineinstrs=virtregrewriter foo.ll
+
+---
+
+## MCInstLower
+
+#### MCInst
+
+##### llc -asm-show-inst foo.ll -o foo.s
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### llc foo.ll -o foo.s
+
+---
+
+## MCCodeEmitter
+
+#### ELF
+
+#####
+
+---
+
+## Any questions?
+
+.footnote[Slideshow created using [remark](http://github.com/gnab/remark).]
+    </textarea>
+    <script src="vendor/remark.js"></script>
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script>
+      var slideshow = remark.create({
+          highlightStyle: 'tomorrow-night',
+          highlightLanguage: 'c++',
+          highlightLines: true
+        }) ;
+    </script>
+  </body>
+</html>

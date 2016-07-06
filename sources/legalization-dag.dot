@@ -1,0 +1,30 @@
+digraph "isel input for foo:entry" {
+	rankdir="BT";
+	label="isel input for foo:entry";
+
+	Node0x2cd62b0 [shape=record,shape=Mrecord,label="{EntryToken|t0|{<d0>ch}}"];
+	Node0x2d27e50 [shape=record,shape=Mrecord,label="{Register %vreg0|t1|{<d0>i32}}"];
+	Node0x2d27f30 [shape=record,shape=Mrecord,label="{Register %vreg1|t3|{<d0>i32}}"];
+	Node0x2d28080 [shape=record,shape=Mrecord,label="{TargetConstant\<0\>|t6|{<d0>i32}}"];
+	Node0x2d280f0 [shape=record,shape=Mrecord,label="{Register %EAX|t7|{<d0>i32}}"];
+	Node0x2d27ec0 [shape=record,shape=Mrecord,label="{{<s0>0|<s1>1}|CopyFromReg|t2|{<d0>i32|<d1>ch}}"];
+	Node0x2d27ec0:s0 -> Node0x2cd62b0:d0[color=blue,style=dashed];
+	Node0x2d27ec0:s1 -> Node0x2d27e50:d0;
+	Node0x2d27fa0 [shape=record,shape=Mrecord,label="{{<s0>0|<s1>1}|CopyFromReg|t4|{<d0>i32|<d1>ch}}"];
+	Node0x2d27fa0:s0 -> Node0x2cd62b0:d0[color=blue,style=dashed];
+	Node0x2d27fa0:s1 -> Node0x2d27f30:d0;
+	Node0x2d28010 [shape=record,shape=Mrecord,label="{{<s0>0|<s1>1}|add|t5|{<d0>i32}}"];
+	Node0x2d28010:s0 -> Node0x2d27ec0:d0;
+	Node0x2d28010:s1 -> Node0x2d27fa0:d0;
+	Node0x2d28160 [shape=record,shape=Mrecord,label="{{<s0>0|<s1>1|<s2>2}|CopyToReg|t8|{<d0>ch|<d1>glue}}"];
+	Node0x2d28160:s0 -> Node0x2cd62b0:d0[color=blue,style=dashed];
+	Node0x2d28160:s1 -> Node0x2d280f0:d0;
+	Node0x2d28160:s2 -> Node0x2d28010:d0;
+	Node0x2d281d0 [shape=record,shape=Mrecord,label="{{<s0>0|<s1>1|<s2>2|<s3>3}|X86ISD::RET_FLAG|t9|{<d0>ch}}"];
+	Node0x2d281d0:s0 -> Node0x2d28160:d0[color=blue,style=dashed];
+	Node0x2d281d0:s1 -> Node0x2d28080:d0;
+	Node0x2d281d0:s2 -> Node0x2d280f0:d0;
+	Node0x2d281d0:s3 -> Node0x2d28160:d1[color=red,style=bold];
+	Node0x0[ plaintext=circle, label ="GraphRoot"];
+	Node0x0 -> Node0x2d281d0:d0[color=blue,style=dashed];
+}
