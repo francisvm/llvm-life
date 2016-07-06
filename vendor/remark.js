@@ -10876,6 +10876,12 @@ function(hljs) {
     begin: '%[a-zA-Z0-9_]+'
   };
 
+  var LLVM_MISC = {
+    className: 'comment',
+    begin: '<[a-z]+>'
+  };
+
+
   var NUMBERS = {
     className: 'title',
     variants: [
@@ -10887,13 +10893,14 @@ function(hljs) {
 
   var LLVM_KEYWORDS = {
     keyword: 'i1 i8 i16 i32 i64 u1 u8 u32 u64',
-    built_in: 'alloca align add store load nsw ret define ADD32rr COPY',
+    built_in: 'alloca align add store load nsw ret define ADD32rr COPY RET',
     literal: 'null'
   };
 
   var EXPRESSION_CONTAINS = [
     LLVM_VARIABLES,
     LLVM_GLOBAL,
+    LLVM_MISC,
     NUMBERS
   ];
 
@@ -16225,6 +16232,56 @@ function(hljs) {
         ]
       }
     ]
+  };
+}
+},{name:"x86",create:/*
+Language: X86 AT&T
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var X86_LABELS = {
+    className: 'symbol',
+    begin: '^[a-z0-9A-Z._]+:'
+  };
+
+  var X86_REGISTERS = {
+    className: 'variable',
+    begin: '%[a-z]+'
+  };
+
+  var X86_COMMENT = {
+    className: 'comment',
+    begin: '#.*$'
+  };
+
+  var NUMBERS = {
+    className: 'title',
+    variants: [
+      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+      { begin: '(-?)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+    ],
+    relevance: 0
+  };
+
+  var X86_KEYWORDS = {
+    keyword: 'pushq movq leal popq retq',
+    built_in: '',
+    literal: ''
+  };
+
+  var EXPRESSION_CONTAINS = [
+    X86_COMMENT,
+    X86_LABELS,
+    X86_REGISTERS,
+    NUMBERS
+  ];
+
+  return {
+    keywords: X86_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
   };
 }
 },{name:"x86asm",create:/*
