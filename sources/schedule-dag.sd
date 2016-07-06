@@ -1,0 +1,9 @@
+Function Live Ins: %EDI in %vreg0, %ESI in %vreg1
+
+BB#0: derived from LLVM BB %entry
+  Live Ins: %EDI %ESI
+    %vreg1<def> = COPY %ESI; GR32:%vreg1
+    %vreg0<def> = COPY %EDI; GR32:%vreg0
+*   %vreg2<def,tied1> = ADD32rr %vreg0<tied0>, %vreg1, %EFLAGS<imp-def,dead>
+    %EAX<def> = COPY %vreg2; GR32:%vreg2
+    RET 0, %EAX

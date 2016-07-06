@@ -10887,7 +10887,7 @@ function(hljs) {
 
   var LLVM_KEYWORDS = {
     keyword: 'i1 i8 i16 i32 i64 u1 u8 u32 u64',
-    built_in: 'alloca align add store load nsw ret define',
+    built_in: 'alloca align add store load nsw ret define ADD32rr COPY',
     literal: 'null'
   };
 

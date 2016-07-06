@@ -58,13 +58,21 @@ add nsw i32 %1, 0
 
 ##### llc -view-sched-dags foo.ll
 
+// FIXME : Show only the add node.
+
+.selectiondag[![SelectionDAG](sources/selection-dag-isel.jpg)]
+
 ---
 
 ## ScheduleDAG
 
 #### MachineInstr
 
-##### llc -print-machineinstr foo.ll
+##### llc -print-before=expand-isel-pseudo foo.ll
+
+```llvm
+!INCLUDE "sources/schedule-dag.sd"
+```
 
 ---
 
@@ -73,6 +81,10 @@ add nsw i32 %1, 0
 #### Non-SSA MachineInstr
 
 ##### llc -print-machineinstrs=virtregrewriter foo.ll
+
+```llvm
+!INCLUDE "sources/regalloc.sd"
+```
 
 ---
 
