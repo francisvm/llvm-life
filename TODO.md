@@ -1,1 +1,1 @@
-[KO] Clang CFG : Color the +
+[OK] Clang CFG : Color the +

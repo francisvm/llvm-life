@@ -20,14 +20,13 @@
 
 ---
 
-## TargetLowering
-## SelectionDAG
+## TargetLowering - SelectionDAG
 
 #### SDNode
 
 ##### llc -view-dag-combine1-dags foo.ll
 
-// FIXME: Show the add node.
+![SelectionDAG](sources/selection-dag.modified.jpg)
 
 ---
 

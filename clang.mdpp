@@ -22,8 +22,6 @@
 
 ##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
 
-![CFG](sources/clang-cfg.jpg)
-
-// FIXME: Highlight the add instruction.
+![CFG](sources/clang-cfg.modified.jpg)
 
 ---
