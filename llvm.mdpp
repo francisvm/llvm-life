@@ -1,18 +1,9 @@
 ## LLVM IR
 
-##### clang -S -emit-llvm foo.c -o foo.ll
+##### clang -O1 -S -emit-llvm foo.c -o foo.ll
 
 ```llvm
-!INCLUDE "sources/foo.ll.modified"
-```
----
-
-## LLVM IR
-
-##### opt -mem2reg -S foo.ll -o foo.ll
-
-```llvm
-!INCLUDE "sources/foo.opt.ll.modified"
+!INCLUDE "sources/foo.modified.ll"
 ```
 ---
 
@@ -24,7 +15,7 @@
 
 #### SDNode
 
-##### llc -view-dag-combine1-dags foo.ll
+##### llc -O1 -view-dag-combine1-dags foo.ll
 
 ![SelectionDAG](sources/selection-dag.modified.jpg)
 
@@ -34,7 +25,7 @@
 
 #### SDNode
 
-##### llc -view-isel-dags foo.ll
+##### llc -O1 -view-isel-dags foo.ll
 
 * Remove illegal types
 ```llvm
@@ -56,7 +47,7 @@ add nsw i32 %1, 0
 
 #### MachineSDNode
 
-##### llc -view-sched-dags foo.ll
+##### llc -O1 -view-sched-dags foo.ll
 
 // FIXME : Show only the add node.
 
@@ -68,7 +59,7 @@ add nsw i32 %1, 0
 
 #### MachineInstr
 
-##### llc -print-before=expand-isel-pseudos foo.ll
+##### llc -O1 -print-before=expand-isel-pseudos foo.ll
 
 ```llvm
 !INCLUDE "sources/schedule-dag.sd"
@@ -80,7 +71,7 @@ add nsw i32 %1, 0
 
 #### Non-SSA MachineInstr
 
-##### llc -print-machineinstrs=virtregrewriter foo.ll
+##### llc -O1 -print-machineinstrs=virtregrewriter foo.ll
 
 ```llvm
 !INCLUDE "sources/regalloc.modified.sd"
@@ -92,11 +83,13 @@ add nsw i32 %1, 0
 
 #### MCInst
 
-##### llc -asm-show-inst foo.ll -o foo.s
+##### llc -O1 -asm-show-inst foo.ll -o foo.s
 
-```x86
-!INCLUDE "sources/mcinst.s"
+.mcinst[
+```mcinst
+!INCLUDE "sources/mcinst.modified.s"
 ```
+]
 
 ---
 
@@ -104,7 +97,13 @@ add nsw i32 %1, 0
 
 #### Assembly
 
-##### llc foo.ll -o foo.s
+##### llc -O1 foo.ll -o foo.s / clang -O1 foo.c -S -o foo.s
+
+.asmprinter[
+```x86
+!INCLUDE "sources/foo.modified.s"
+```
+]
 
 ---
 
@@ -112,6 +111,12 @@ add nsw i32 %1, 0
 
 #### ELF
 
-#####
+##### clang -O1 -c foo.c -o foo.o
+
+.objdump[
+```objdump
+!INCLUDE "sources/foo.objdump.modified"
+```
+]
 
 ---
