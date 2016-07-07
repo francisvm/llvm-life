@@ -111,7 +111,7 @@ add nsw i32 %1, 0
 
 #### ELF
 
-##### clang -O1 -c foo.c -o foo.o
+##### clang -c -fintegrated-as -O1 foo.c -o foo.o
 
 .objdump[
 ```objdump
