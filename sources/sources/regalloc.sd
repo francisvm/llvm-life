@@ -1,0 +1,11 @@
+# :
+# Machine code for function foo: Properties: <Post SSA, tracking liveness, AllVRegsAllocated>
+Function Live Ins: %EDI, %ESI
+
+0B	BB#0: derived from LLVM BB %entry
+	    Live Ins: %EDI %ESI
+80B		%EAX<def> = LEA64_32r %RDI<kill>, 1, %RSI<kill>, 0, %noreg
+112B		RET 0, %EAX
+
+# End machine code for function foo.
+

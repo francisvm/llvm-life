@@ -10876,6 +10876,16 @@ function(hljs) {
     begin: '%[a-zA-Z0-9_]+'
   };
 
+  var LLVM_MISC = {
+    className: 'comment',
+    begin: '<[a-z -]+>'
+  };
+
+  var LLVM_COMMENT = {
+    className: 'comment',
+    begin: ';.*$'
+  };
+
   var NUMBERS = {
     className: 'title',
     variants: [
@@ -10887,13 +10897,15 @@ function(hljs) {
 
   var LLVM_KEYWORDS = {
     keyword: 'i1 i8 i16 i32 i64 u1 u8 u32 u64',
-    built_in: 'alloca align add store load nsw ret define',
+    built_in: 'alloca size align add store load nsw ret define ADD32rr COPY RET PUSH64r MOV64rr LEA64_32r POP64r RETQ CFI_INSTRUCTION',
     literal: 'null'
   };
 
   var EXPRESSION_CONTAINS = [
+    LLVM_COMMENT,
     LLVM_VARIABLES,
     LLVM_GLOBAL,
+    LLVM_MISC,
     NUMBERS
   ];
 
@@ -11276,6 +11288,68 @@ function(hljs) {
       hljs.COMMENT('^\\s*\\%\\{\\s*$', '^\\s*\\%\\}\\s*$'),
       hljs.COMMENT('\\%', '$')
     ].concat(COMMON_CONTAINS)
+  };
+}
+},{name:"mcinst",create:/*
+Language: X86 AT&T
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var MC_GLOBAL = {
+    className: 'comment',
+    begin: '@[a-zA-Z0-9_]+'
+  };
+
+  var MC_VAL = {
+    className: 'comment',
+    begin: '%[a-z]+'
+  };
+
+  var MC_COMMENT = {
+    className: 'comment',
+    begin: '#.*$'
+  };
+
+  var MC_INST = {
+    className: 'symbol',
+    begin: '<MCInst'
+  };
+
+  var MC_OPER = {
+    className: 'variable',
+    begin: '<MCOperand'
+  };
+
+  var NUMBERS = {
+    className: 'title',
+    variants: [
+      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+      { begin: '(-?)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+    ],
+    relevance: 0
+  };
+
+  var MC_KEYWORDS = {
+    keyword: 'Reg Imm',
+    built_in: '',
+    literal: ''
+  };
+
+  var EXPRESSION_CONTAINS = [
+    MC_GLOBAL,
+    MC_VAL,
+    MC_COMMENT,
+    MC_INST,
+    MC_OPER,
+    NUMBERS
+  ];
+
+  return {
+    keywords: MC_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
   };
 }
 },{name:"mel",create:/*
@@ -12114,6 +12188,58 @@ function(hljs) {
         begin: hljs.IDENT_RE + '::' + hljs.IDENT_RE
       }
     ]
+  };
+}
+},{name:"objdump",create:/*
+Language: X86 AT&T
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var X86_LABELS = {
+    className: 'comment',
+    begin: '^[ ]*[a-z0-9A-Z._]+:',
+    relevance: 1
+  };
+
+  var X86_REGISTERS = {
+    className: 'variable',
+    begin: '%[a-z]+'
+  };
+
+  var X86_COMMENT = {
+    className: 'comment',
+    begin: '#.*$'
+  };
+
+  var NUMBERS = {
+    className: 'title',
+    variants: [
+      { begin: '(-?)(^addl)(8b)(7d)(5d)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' },
+      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+      { begin: '(-?)(\\b[a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+    ],
+    relevance: 0
+  };
+
+  var X86_KEYWORDS = {
+    keyword: 'pushq movq leal popq retq movl addl',
+    built_in: '',
+    literal: ''
+  };
+
+  var EXPRESSION_CONTAINS = [
+    X86_COMMENT,
+    X86_LABELS,
+    X86_REGISTERS,
+    NUMBERS
+  ];
+
+  return {
+    keywords: X86_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
   };
 }
 },{name:"objectivec",create:/*
@@ -16225,6 +16351,56 @@ function(hljs) {
         ]
       }
     ]
+  };
+}
+},{name:"x86",create:/*
+Language: X86 AT&T
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var X86_LABELS = {
+    className: 'symbol',
+    begin: '^[a-z0-9A-Z._]+:'
+  };
+
+  var X86_REGISTERS = {
+    className: 'variable',
+    begin: '%[a-z]+'
+  };
+
+  var X86_COMMENT = {
+    className: 'comment',
+    begin: '#.*$'
+  };
+
+  var NUMBERS = {
+    className: 'title',
+    variants: [
+      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+      { begin: '(-?)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+    ],
+    relevance: 0
+  };
+
+  var X86_KEYWORDS = {
+    keyword: 'pushq movq leal popq retq',
+    built_in: '',
+    literal: ''
+  };
+
+  var EXPRESSION_CONTAINS = [
+    X86_COMMENT,
+    X86_LABELS,
+    X86_REGISTERS,
+    NUMBERS
+  ];
+
+  return {
+    keywords: X86_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
   };
 }
 },{name:"x86asm",create:/*

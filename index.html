@@ -91,6 +91,19 @@
       .selectiondag img {
         max-width: 63%;
       }
+      .mcinst {
+        margin: 0 auto;
+        max-width: 53%;
+      }
+      .objdump {
+        margin: 0 auto;
+        max-width: 84%;
+      }
+      .asmprinter {
+        margin: 0 auto;
+        max-width: 80%;
+      }
+
     </style>
   </head>
   <body>
@@ -151,32 +164,14 @@ TranslationUnitDecl 0x29eaa20
 
 ## LLVM IR
 
-##### clang -S -emit-llvm foo.c -o foo.ll
+##### clang -O1 -S -emit-llvm foo.c -o foo.ll
 
 ```llvm
-; Function Attrs: nounwind uwtable
+; Function Attrs: norecurse nounwind readnone uwtable
 define i32 @foo(i32 %a, i32 %b) {
-  %1 = alloca i32, align 4
-  %2 = alloca i32, align 4
-  store i32 %a, i32* %1, align 4
-  store i32 %b, i32* %2, align 4
-  %3 = load i32, i32* %1, align 4
-  %4 = load i32, i32* %2, align 4
-* %5 = add nsw i32 %3, %4
-  ret i32 %5
-}
-```
----
-
-## LLVM IR
-
-##### opt -mem2reg -S foo.ll -o foo.ll
-
-```llvm
-; Function Attrs: nounwind uwtable
-define i32 @foo(i32 %a, i32 %b) {
-* %1 = add nsw i32 %a, %b
-  ret i32 %1
+entry:
+* %add = add nsw i32 %b, %a
+  ret i32 %add
 }
 ```
 ---
@@ -189,7 +184,7 @@ define i32 @foo(i32 %a, i32 %b) {
 
 #### SDNode
 
-##### llc -view-dag-combine1-dags foo.ll
+##### llc -O1 -view-dag-combine1-dags foo.ll
 
 ![SelectionDAG](sources/selection-dag.modified.jpg)
 
@@ -199,7 +194,7 @@ define i32 @foo(i32 %a, i32 %b) {
 
 #### SDNode
 
-##### llc -view-isel-dags foo.ll
+##### llc -O1 -view-isel-dags foo.ll
 
 * Remove illegal types
 ```llvm
@@ -221,7 +216,11 @@ add nsw i32 %1, 0
 
 #### MachineSDNode
 
-##### llc -view-sched-dags foo.ll
+##### llc -O1 -view-sched-dags foo.ll
+
+// FIXME : Show only the add node.
+
+.selectiondag[![SelectionDAG](sources/selection-dag-isel.jpg)]
 
 ---
 
@@ -229,7 +228,19 @@ add nsw i32 %1, 0
 
 #### MachineInstr
 
-##### llc -print-machineinstr foo.ll
+##### llc -O1 -print-before=expand-isel-pseudos foo.ll
+
+```llvm
+Function Live Ins: %EDI in %vreg0, %ESI in %vreg1
+
+BB#0: derived from LLVM BB %entry
+  Live Ins: %EDI %ESI
+    %vreg1<def> = COPY %ESI; GR32:%vreg1
+    %vreg0<def> = COPY %EDI; GR32:%vreg0
+*   %vreg2<def,tied1> = ADD32rr %vreg0<tied0>, %vreg1, %EFLAGS<imp-def,dead>
+    %EAX<def> = COPY %vreg2; GR32:%vreg2
+    RET 0, %EAX
+```
 
 ---
 
@@ -237,7 +248,16 @@ add nsw i32 %1, 0
 
 #### Non-SSA MachineInstr
 
-##### llc -print-machineinstrs=virtregrewriter foo.ll
+##### llc -O1 -print-machineinstrs=virtregrewriter foo.ll
+
+```llvm
+Function Live Ins: %EDI, %ESI
+
+0B  BB#0: derived from LLVM BB %entry
+      Live Ins: %EDI %ESI
+*80B     %EAX<def> = LEA64_32r %RDI<kill>, 1, %RSI<kill>, 0, %noreg
+112B    RET 0, %EAX
+```
 
 ---
 
@@ -245,7 +265,23 @@ add nsw i32 %1, 0
 
 #### MCInst
 
-##### llc -asm-show-inst foo.ll -o foo.s
+##### llc -O1 -asm-show-inst foo.ll -o foo.s
+
+.mcinst[
+```mcinst
+ @foo
+ %entry
+*<MCInst #1278 LEA64_32r
+  <MCOperand Reg:19>
+  <MCOperand Reg:39>
+  <MCOperand Imm:1>
+  <MCOperand Reg:43>
+  <MCOperand Imm:0>
+  <MCOperand Reg:0>>
+<MCInst #2472 RETQ
+  <MCOperand Reg:19>>
+```
+]
 
 ---
 
@@ -253,7 +289,22 @@ add nsw i32 %1, 0
 
 #### Assembly
 
-##### llc foo.ll -o foo.s
+##### llc -O1 foo.ll -o foo.s / clang -c -O1 -S foo.c -o foo.s
+
+.asmprinter[
+```x86
+foo:                                    # @foo
+# BB#0:                                 # %entry
+*       leal    (%rdi,%rsi), %eax       # <MCInst #1278 LEA64_32r
+                                        #  <MCOperand Reg:19>
+                                        #  <MCOperand Reg:39>
+                                        #  <MCOperand Imm:1>
+                                        #  <MCOperand Reg:43>
+                                        #  <MCOperand Imm:0>
+                                        #  <MCOperand Reg:0>>
+        retq                            # <MCInst #2472 RETQ
+```
+]
 
 ---
 
@@ -261,7 +312,15 @@ add nsw i32 %1, 0
 
 #### ELF
 
-#####
+##### clang -c -fintegrated-as -O1 foo.c -o foo.o
+
+.objdump[
+```objdump
+foo:
+*      0:       8d 04 37        leal    (%rdi,%rsi), %eax
+       3:       c3              retq
+```
+]
 
 ---
 
