@@ -88,6 +88,9 @@
       li {
         text-align: left;
       }
+      .clangcfg img {
+        max-width: 75%;
+      }
       .selectiondag img {
         max-width: 63%;
       }

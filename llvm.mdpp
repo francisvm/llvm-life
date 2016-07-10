@@ -17,6 +17,8 @@
 
 ##### llc -O1 -view-dag-combine1-dags foo.ll
 
+// FIXME: Rerender from 300dpi
+
 ![SelectionDAG](sources/selection-dag.modified.jpg)
 
 ---
