@@ -224,6 +224,18 @@ add nsw i32 %1, 0
 
 ---
 
+## SelectionDAGISel
+
+#### MachineSDNode
+
+##### llvm/lib/Target/X86/X86InstrCompiler.td
+
+```tablegen
+def : Pat<(add GR32:$src1, GR32:$src2), (ADD32rr GR32:$src1, GR32:$src2)>;
+```
+
+---
+
 ## ScheduleDAG
 
 #### MachineInstr
@@ -289,7 +301,7 @@ Function Live Ins: %EDI, %ESI
 
 #### Assembly
 
-##### llc -O1 foo.ll -o foo.s / clang -c -O1 -S foo.c -o foo.s
+##### llc -O1 foo.ll -o foo.s / clang -O1 foo.c -S -o foo.s
 
 .asmprinter[
 ```x86
