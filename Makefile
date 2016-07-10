@@ -5,7 +5,7 @@ SOURCES=$(shell find sources)
 all: index.html
 
 content.md: $(SLIDES) $(SOURCES)
-	markdown-pp -o $@ $<
+	markdown-pp -e latexrender -o $@ $<
 
 index.html: $(SRC)
 	cat $^ > $@

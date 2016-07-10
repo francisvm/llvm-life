@@ -15553,6 +15553,40 @@ function(hljs) {
     ]
   };
 }
+},{name:"tablegen",create:/*
+Language: LLVM IR
+Author: Francis Visoiu Mistrih <francisvm@yahoo.com>
+Contributors:
+Category: common, system
+*/
+
+function(hljs) {
+  var TABLEGEN_CLASS = {
+    className: 'symbol',
+    begin: 'GR[1-9]+'
+  };
+
+  var TABLEGEN_REG = {
+    className: 'variable',
+    begin: '\\$[a-zA-Z0-9_]+'
+  };
+
+  var TABLEGEN_KEYWORDS = {
+    keyword: 'def',
+    built_in: 'alloca size align add store load nsw ret define ADD32rr COPY RET PUSH64r MOV64rr LEA64_32r POP64r RETQ CFI_INSTRUCTION',
+    literal: 'null'
+  };
+
+  var EXPRESSION_CONTAINS = [
+    TABLEGEN_CLASS,
+    TABLEGEN_REG
+  ];
+
+  return {
+    keywords: TABLEGEN_KEYWORDS,
+    contains: EXPRESSION_CONTAINS
+  };
+}
 },{name:"tcl",create:/*
 Language: Tcl
 Author: Radek Liska <radekliska@gmail.com>

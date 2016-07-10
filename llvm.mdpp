@@ -55,6 +55,18 @@ add nsw i32 %1, 0
 
 ---
 
+## SelectionDAGISel
+
+#### MachineSDNode
+
+##### llvm/lib/Target/X86/X86InstrCompiler.td
+
+```tablegen
+def : Pat<(add GR32:$src1, GR32:$src2), (ADD32rr GR32:$src1, GR32:$src2)>;
+```
+
+---
+
 ## ScheduleDAG
 
 #### MachineInstr
