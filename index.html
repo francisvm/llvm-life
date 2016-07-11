@@ -88,6 +88,9 @@
       li {
         text-align: left;
       }
+      .clangcfg img {
+        max-width: 75%;
+      }
       .selectiondag img {
         max-width: 63%;
       }
@@ -158,7 +161,7 @@ TranslationUnitDecl 0x29eaa20
 
 ##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
 
-![CFG](sources/clang-cfg.modified.jpg)
+.clangcfg[![CFG](sources/clang-cfg.jpg)]
 
 ---
 
@@ -185,6 +188,8 @@ entry:
 #### SDNode
 
 ##### llc -O1 -view-dag-combine1-dags foo.ll
+
+// FIXME: Rerender from 300dpi
 
 ![SelectionDAG](sources/selection-dag.modified.jpg)
 
@@ -320,11 +325,28 @@ foo:                                    # @foo
 
 ---
 
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+                  (outs GR32:$dst), (ins lea64_32mem:$src),
+                  "lea{l}\t{$src|$dst}, {$dst|$src}",
+                  [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
 ## MCCodeEmitter
 
 #### ELF
 
 ##### clang -c -fintegrated-as -O1 foo.c -o foo.o
+##### llvm-objdump -disassemble foo.o
 
 .objdump[
 ```objdump

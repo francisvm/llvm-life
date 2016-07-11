@@ -15563,7 +15563,7 @@ Category: common, system
 function(hljs) {
   var TABLEGEN_CLASS = {
     className: 'symbol',
-    begin: 'GR[1-9]+'
+    begin: '(GR[1-9]+|lea[1-9]+_[1-9]+[a-z]+)'
   };
 
   var TABLEGEN_REG = {
@@ -15571,13 +15571,39 @@ function(hljs) {
     begin: '\\$[a-zA-Z0-9_]+'
   };
 
+  var STRINGS = {
+    className: 'string',
+    variants: [
+      hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
+      {
+        begin: '(u8?|U)?R"', end: '"',
+        contains: [hljs.BACKSLASH_ESCAPE]
+      },
+      {
+        begin: '\'\\\\?.', end: '\'',
+        illegal: '.'
+      }
+    ]
+  };
+
+  var NUMBERS = {
+    className: 'number',
+    variants: [
+      { begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)' },
+      { begin: hljs.C_NUMBER_RE }
+    ],
+    relevance: 0
+  };
+
   var TABLEGEN_KEYWORDS = {
-    keyword: 'def',
+    keyword: 'def outs ins set',
     built_in: 'alloca size align add store load nsw ret define ADD32rr COPY RET PUSH64r MOV64rr LEA64_32r POP64r RETQ CFI_INSTRUCTION',
     literal: 'null'
   };
 
   var EXPRESSION_CONTAINS = [
+    STRINGS,
+    NUMBERS,
     TABLEGEN_CLASS,
     TABLEGEN_REG
   ];
