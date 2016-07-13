@@ -128,10 +128,58 @@ def : Pat<(add GR32:$src1, GR32:$src2), (ADD32rr GR32:$src1, GR32:$src2)>;
 ##### lib/Target/X86/X86InstrArithmetic.td
 
 ```tablegen
-def LEA64_32r : I<0x8D, MRMSrcMem,
+*def LEA64_32r : I<0x8D, MRMSrcMem,
                   (outs GR32:$dst), (ins lea64_32mem:$src),
                   "lea{l}\t{$src|$dst}, {$dst|$src}",
                   [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+*                 (outs GR32:$dst), (ins lea64_32mem:$src),
+                  "lea{l}\t{$src|$dst}, {$dst|$src}",
+                  [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+                  (outs GR32:$dst), (ins lea64_32mem:$src),
+*                 "lea{l}\t{$src|$dst}, {$dst|$src}",
+                  [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+                  (outs GR32:$dst), (ins lea64_32mem:$src),
+                  "lea{l}\t{$src|$dst}, {$dst|$src}",
+*                 [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
                   OpSize32, Requires<[In64BitMode]>;
 ```
 
