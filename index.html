@@ -106,6 +106,9 @@
         margin: 0 auto;
         max-width: 80%;
       }
+      .twitter {
+        font-size: 9pt;
+      }
 
     </style>
   </head>
@@ -332,10 +335,58 @@ foo:                                    # @foo
 ##### lib/Target/X86/X86InstrArithmetic.td
 
 ```tablegen
-def LEA64_32r : I<0x8D, MRMSrcMem,
+*def LEA64_32r : I<0x8D, MRMSrcMem,
                   (outs GR32:$dst), (ins lea64_32mem:$src),
                   "lea{l}\t{$src|$dst}, {$dst|$src}",
                   [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+*                 (outs GR32:$dst), (ins lea64_32mem:$src),
+                  "lea{l}\t{$src|$dst}, {$dst|$src}",
+                  [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+                  (outs GR32:$dst), (ins lea64_32mem:$src),
+*                 "lea{l}\t{$src|$dst}, {$dst|$src}",
+                  [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
+                  OpSize32, Requires<[In64BitMode]>;
+```
+
+---
+
+## AsmPrinter
+
+#### Assembly
+
+##### lib/Target/X86/X86InstrArithmetic.td
+
+```tablegen
+def LEA64_32r : I<0x8D, MRMSrcMem,
+                  (outs GR32:$dst), (ins lea64_32mem:$src),
+                  "lea{l}\t{$src|$dst}, {$dst|$src}",
+*                 [(set GR32:$dst, lea64_32addr:$src)], IIC_LEA>,
                   OpSize32, Requires<[In64BitMode]>;
 ```
 
@@ -359,6 +410,10 @@ foo:
 ---
 
 ## Any questions?
+
+###### <francis@lse.epita.fr>
+
+.twitter[[@thegameg](https://twitter.com/thegameg)]
 
 .footnote[Slideshow created using [remark](http://github.com/gnab/remark).]
     </textarea>
