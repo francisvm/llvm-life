@@ -1,4 +1,5 @@
 [OK] clang CFG : Color the +
-[KO] gh-pages
+[KO] grep FIXME
+[OK] gh-pages
 [KO] travis.ci
 [KO] deploy with travis.ci
