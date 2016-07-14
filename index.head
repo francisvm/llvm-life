@@ -113,6 +113,9 @@
       .twitter {
         font-size: 9pt;
       }
+      .llvm img {
+        max-width:25%;
+      }
 
     </style>
   </head>

@@ -5,6 +5,8 @@ class: center, middle, inverse
 # Life of an instruction in
 # Clang / LLVM
 
+.llvm[![LLVM](sources/llvm.png)]
+
 #### Francis Visoiu Mistrih
 ###### <francis@lse.epita.fr>
 
