@@ -10,7 +10,6 @@ class: center, middle, inverse
 
 ![LSE](sources/lse.jpg)
 
-.footnote[[sources](https://github.com/thegameg/llvm-life)]
 ---
 
 !INCLUDE "clang.mdpp"
