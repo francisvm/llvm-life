@@ -22,8 +22,6 @@
 
 ##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
 
-// FIXME: Add red annotations
-
-.clangcfg[![CFG](sources/clang-cfg.jpg)]
+.clangcfg[![CFG](sources/clang-cfg.modified.jpg)]
 
 ---

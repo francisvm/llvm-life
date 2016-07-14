@@ -94,6 +94,10 @@
       .selectiondag img {
         max-width: 63%;
       }
+      .selectiondagmodified img {
+        max-width: 50%;
+      }
+
       .mcinst {
         margin: 0 auto;
         max-width: 53%;
