@@ -94,6 +94,10 @@
       .selectiondag img {
         max-width: 63%;
       }
+      .selectiondagmodified img {
+        max-width: 50%;
+      }
+
       .mcinst {
         margin: 0 auto;
         max-width: 53%;
@@ -109,6 +113,9 @@
       .twitter {
         font-size: 9pt;
       }
+      .llvm img {
+        max-width:25%;
+      }
 
     </style>
   </head>
@@ -121,10 +128,12 @@ class: center, middle, inverse
 # Life of an instruction in
 # Clang / LLVM
 
-#### Francis Visoiu Mistrih
-###### <francis@lse.epita.fr>
+.llvm[![LLVM](sources/llvm.png)]
 
-.footnote[[sources](https://github.com/thegameg/llvm-life)]
+##### Francis Visoiu Mistrih - <francis@lse.epita.fr>
+
+![LSE](sources/lse.jpg)
+
 ---
 
 ## Clang
@@ -164,7 +173,7 @@ TranslationUnitDecl 0x29eaa20
 
 ##### clang -cc1 -analyze -analyzer-checker=debug.ViewCFG foo.c
 
-.clangcfg[![CFG](sources/clang-cfg.jpg)]
+.clangcfg[![CFG](sources/clang-cfg.modified.jpg)]
 
 ---
 
@@ -192,9 +201,7 @@ entry:
 
 ##### llc -O1 -view-dag-combine1-dags foo.ll
 
-// FIXME: Rerender from 300dpi
-
-![SelectionDAG](sources/selection-dag.modified.jpg)
+.selectiondagmodified[![SelectionDAG](sources/selection-dag.modified.jpg)]
 
 ---
 
@@ -226,9 +233,7 @@ add nsw i32 %1, 0
 
 ##### llc -O1 -view-sched-dags foo.ll
 
-// FIXME : Show only the add node.
-
-.selectiondag[![SelectionDAG](sources/selection-dag-isel.jpg)]
+.selectiondagmodified[![SelectionDAG](sources/selection-dag-isel.modified.jpg)]
 
 ---
 
