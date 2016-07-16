@@ -9,8 +9,6 @@ class: center, middle, inverse
 
 ##### Francis Visoiu Mistrih - <francis@lse.epita.fr>
 
-![LSE](sources/lse.jpg)
-
 ---
 
 !INCLUDE "clang.mdpp"
