@@ -1,8 +1,0 @@
-digraph unnamed {
-
-	Node0x6c18900 [shape=record,label="{ [B0 (EXIT)]\l}"];
-	Node0x6c189d8 [shape=record,label="{ [B1]\l  1: a\l  2: [B1.1] (ImplicitCastExpr, LValueToRValue, int)\l  3: b\l  4: [B1.3] (ImplicitCastExpr, LValueToRValue, int)\l  5: [B1.2] + [B1.4]\l  6: return [B1.5];\l}"];
-	Node0x6c189d8 -> Node0x6c18900;
-	Node0x6c18b30 [shape=record,label="{ [B2 (ENTRY)]\l}"];
-	Node0x6c18b30 -> Node0x6c189d8;
-}

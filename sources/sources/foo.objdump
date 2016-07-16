@@ -1,7 +1,0 @@
-
-foo.o:	file format ELF64-x86-64
-
-Disassembly of section .text:
-foo:
-       0:	8d 04 37 	leal	(%rdi,%rsi), %eax
-       3:	c3 	retq
