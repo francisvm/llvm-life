@@ -34,11 +34,11 @@ i1 -> i32
 
 * Remove target-illegal instructions
 ```llvm
-load i32, i32* %1
+mul i32 %a, 8
 ```
 to
 ```llvm
-add nsw i32 %1, 0
+shl i32 %a, 3
 ```
 
 ---
