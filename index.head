@@ -131,6 +131,13 @@
       .llvm img {
         max-width:25%;
       }
+      .urls {
+        padding-bottom: 30px;
+      }
+      .urls * {
+        font-size: 8pt;
+        text-align: left;
+      }
 
     </style>
   </head>
