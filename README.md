@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/thegameg/llvm-life.svg?branch=master)](https://travis-ci.org/thegameg/llvm-life)
+
 # LLVM / Clang
 
 Check it out [here](https://thegameg.github.io/llvm-life/).
